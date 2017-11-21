@@ -107,10 +107,7 @@ public class Flock : MonoBehaviour {
             Physics.Raycast(transform.position, left, out hitInfoLeft, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
             Physics.Raycast(transform.position, right, out hitInfoRight, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
 
-            if(Vector3.Distance(transform.position, hitInfoLeft.point) > Vector3.Distance(transform.position, hitInfoRight.point))
-            {
-                dod = -dod;
-            }
+            dod = myAgent.Fov.DirFromAngle((Vector3.Distance(transform.position, hitInfoLeft.point) > Vector3.Distance(transform.position, hitInfoRight.point) ? -angle : angle));
         }
 
         dod.y = 0;

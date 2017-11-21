@@ -7,7 +7,7 @@ using UnityEngine;
 public class AgentsSettings : MonoBehaviour{
 
 	// Perception radius
-	private float viewRadius = 5.0f;
+	private float viewRadius = 20.0f;
 	public float ViewRadius {
 		get {
 			return viewRadius;
