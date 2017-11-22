@@ -105,6 +105,31 @@ public class AgentsSettings : MonoBehaviour{
 		}
 	}
 
+	// Doors layer
+	public LayerMask doorMask;
+	public LayerMask DoorMask {
+		get {
+			return doorMask;
+		}
+	}
+
+	// Indications layer
+	public LayerMask indicationMask;
+	public LayerMask IndicationMask {
+		get {
+			return indicationMask;
+		}
+	}
+
+	// Fire layer
+	public LayerMask fireMask;
+	public LayerMask FireMask {
+		get {
+			return fireMask;
+		}
+	}
+
+
 	void Start() {
 		/*targetMask = LayerMask.GetMask("targetMask");
 		obstacleMask = LayerMask.GetMask("obstacleMask");*/
