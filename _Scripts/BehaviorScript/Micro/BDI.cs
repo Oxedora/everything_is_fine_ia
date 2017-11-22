@@ -47,7 +47,7 @@ public class BDI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		perception = new Perception(GetComponent<Agent>());
 	}
 	
 	// Update is called once per frame

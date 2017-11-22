@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Perception : MonoBehaviour {
+public class Perception {
 	private List<Agent> agentsInSight;
 	public List<Agent> AgentsInSight {
 		get {
@@ -53,14 +53,14 @@ public class Perception : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	public Perception(Agent agent) {
 		agentsInSight = new List<Agent>();
 		agentsTooClose = new List<Agent>();
 		wallsInSight = new List<GameObject>();
 		doorsInSight = new List<GameObject>();
 		indicationsInSight = new List<GameObject>();
 		isFire = false;
-		myAgent = GetComponent<Agent>();
+		myAgent = agent;
 	}
 	
 	// Update is called once per frame
@@ -89,16 +89,16 @@ public class Perception : MonoBehaviour {
 
 	public List<Agent> getAgentsTooClose(){
 		List<Agent> visibleTargets = new List<Agent>();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, MyAgent.Settings.SafeSpace, MyAgent.Settings.TargetMask);
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(MyAgent.transform.position, MyAgent.Settings.SafeSpace, MyAgent.Settings.TargetMask);
 
 		foreach (Collider c in targetsInViewRadius)
 		{
 			Agent target = c.gameObject.GetComponent<Agent>();
 			if(target != null){
-				Vector3 dirToTarget = (target.transform.position - transform.position).normalized;
+				Vector3 dirToTarget = (target.transform.position - MyAgent.transform.position).normalized;
 				
-				float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
-				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, MyAgent.Settings.ObstacleMask))
+				float dstToTarget = Vector3.Distance(MyAgent.transform.position, target.transform.position);
+				if (!Physics.Raycast(MyAgent.transform.position, dirToTarget, dstToTarget, MyAgent.Settings.ObstacleMask))
 				{
 					visibleTargets.Add(target);
 				}
@@ -110,20 +110,20 @@ public class Perception : MonoBehaviour {
 
 	public List<GameObject> getWallsInSight(){
 		List<GameObject> visibleTargets = new List<GameObject>();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, MyAgent.Settings.ViewRadius, MyAgent.Settings.ObstacleMask);
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(MyAgent.transform.position, MyAgent.Settings.ViewRadius, MyAgent.Settings.ObstacleMask);
 
 		foreach (Collider c in targetsInViewRadius)
 		{
 			GameObject target = c.gameObject;
 			if(target != null){
-				Vector3 dirToTarget = (target.transform.position - transform.position).normalized;
+				Vector3 dirToTarget = (target.transform.position - MyAgent.transform.position).normalized;
 
-				if (Vector3.Angle(transform.forward, dirToTarget) < MyAgent.Settings.ViewAngle / 2)
+				if (Vector3.Angle(MyAgent.transform.forward, dirToTarget) < MyAgent.Settings.ViewAngle / 2)
 				{
-					float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
+					float dstToTarget = Vector3.Distance(MyAgent.transform.position, target.transform.position);
 
 					RaycastHit hitInfo;
-					if (Physics.Raycast(transform.position, dirToTarget, out hitInfo, dstToTarget, MyAgent.Settings.ObstacleMask) 
+					if (Physics.Raycast(MyAgent.transform.position, dirToTarget, out hitInfo, dstToTarget, MyAgent.Settings.ObstacleMask) 
 						&& (hitInfo.collider.gameObject.GetInstanceID() == target.GetInstanceID()))
 					{
 						visibleTargets.Add(target);
@@ -137,7 +137,7 @@ public class Perception : MonoBehaviour {
 
 	public bool isFireInSight(){
 		List<GameObject> visibleTargets = new List<GameObject>();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, MyAgent.Settings.ViewRadius, MyAgent.Settings.FireMask); // layer indications
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(MyAgent.transform.position, MyAgent.Settings.ViewRadius, MyAgent.Settings.FireMask); // layer indications
 
 		int i = 0;
 		while (i < targetsInViewRadius.Length && visibleTargets.Count > 0)
@@ -151,12 +151,12 @@ public class Perception : MonoBehaviour {
 
 	public List<GameObject> getGameObjectsInSight(LayerMask layer){
 		List<GameObject> visibleTargets = new List<GameObject>();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, MyAgent.Settings.ViewRadius, layer);
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(MyAgent.transform.position, MyAgent.Settings.ViewRadius, layer);
 
 		foreach (Collider c in targetsInViewRadius)
 		{
 			GameObject target = c.gameObject;
-			if(isInSight(target)){ visibleTargets.Add(target);}
+			if(isInSight(target)){visibleTargets.Add(target);}
 		}
 
 		return visibleTargets;
@@ -165,13 +165,13 @@ public class Perception : MonoBehaviour {
 	public bool isInSight(GameObject target){
 		bool inSight = false;
 		if(target != null){
-				Vector3 dirToTarget = (target.transform.position - transform.position).normalized;
+				Vector3 dirToTarget = (target.transform.position - MyAgent.transform.position).normalized;
 
-				if (Vector3.Angle(transform.forward, dirToTarget) < MyAgent.Settings.ViewAngle / 2)
+				if (Vector3.Angle(MyAgent.transform.forward, dirToTarget) < MyAgent.Settings.ViewAngle / 2)
 				{
-					float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
+					float dstToTarget = Vector3.Distance(MyAgent.transform.position, target.transform.position);
 
-					if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, MyAgent.Settings.ObstacleMask))
+					if (!Physics.Raycast(MyAgent.transform.position, dirToTarget, dstToTarget, MyAgent.Settings.ObstacleMask))
 					{
 						inSight = true;
 					}
@@ -184,7 +184,7 @@ public class Perception : MonoBehaviour {
     {
         if (!angleIsGlobal)
         {
-            angleInDegrees += transform.eulerAngles.y;
+            angleInDegrees += MyAgent.transform.eulerAngles.y;
         }
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
