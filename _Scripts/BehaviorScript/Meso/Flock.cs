@@ -99,7 +99,7 @@ public class Flock : MonoBehaviour {
             dod = transform.position - hitInfo.point;
 			float ratio = dod.magnitude / (float) myAgent.Settings.ViewRadius;
 			float angle = myAgent.Settings.ViewAngle - myAgent.Settings.ViewAngle * ratio;
-			dod = myAgent.Fov.DirFromAngle(angle);
+			dod = myAgent.Bdi.myPerception.DirFromAngle(angle);
 
             Vector3 left = transform.TransformDirection(Vector3.left);
             Vector3 right = transform.TransformDirection(Vector3.right);
@@ -107,7 +107,7 @@ public class Flock : MonoBehaviour {
             Physics.Raycast(transform.position, left, out hitInfoLeft, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
             Physics.Raycast(transform.position, right, out hitInfoRight, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
 
-            dod = myAgent.Fov.DirFromAngle((Vector3.Distance(transform.position, hitInfoLeft.point) > Vector3.Distance(transform.position, hitInfoRight.point) ? -angle : angle));
+            dod = myAgent.Bdi.myPerception.DirFromAngle((Vector3.Distance(transform.position, hitInfoLeft.point) > Vector3.Distance(transform.position, hitInfoRight.point) ? -angle : angle));
         }
 
         dod.y = 0;

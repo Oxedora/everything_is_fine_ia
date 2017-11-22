@@ -30,10 +30,10 @@ public class Agent : MonoBehaviour {
     	}
     }
 
-    private FieldOfView fov;
-    public FieldOfView Fov {
+    private BDI bdi;
+    public BDI Bdi {
     	get {
-    		return fov;
+    		return bdi;
     	}
     }
 
@@ -43,15 +43,15 @@ public class Agent : MonoBehaviour {
 		rb = GetComponent<Rigidbody>();
 		settings = GetComponent<AgentsSettings>();
 		flocking = GetComponent<Flock>();
-		fov = GetComponent<FieldOfView>();
+		bdi = GetComponent<BDI>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        List<Agent> neighbors = fov.FindVisibleTargets();
+        List<Agent> neighbors = bdi.myPerception.AgentsInSight;
 
-        Vector3 viewAngleA = fov.DirFromAngle(- settings.ViewAngle / 2, false);
-        Vector3 viewAngleB = fov.DirFromAngle(settings.ViewAngle / 2, false);
+        Vector3 viewAngleA = bdi.myPerception.DirFromAngle(- settings.ViewAngle / 2, false);
+        Vector3 viewAngleB = bdi.myPerception.DirFromAngle(settings.ViewAngle / 2, false);
 
         Debug.DrawLine(transform.position, transform.position + viewAngleA * settings.ViewRadius);
         Debug.DrawLine(transform.position, transform.position + viewAngleB * settings.ViewRadius);

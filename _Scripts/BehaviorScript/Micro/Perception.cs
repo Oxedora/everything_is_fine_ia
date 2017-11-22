@@ -108,18 +108,45 @@ public class Perception : MonoBehaviour {
 		return visibleTargets;
 	}
 
+	public List<GameObject> getWallsInSight(){
+		List<GameObject> visibleTargets = new List<GameObject>();
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, MyAgent.Settings.ViewRadius, MyAgent.Settings.ObstacleMask);
+
+		foreach (Collider c in targetsInViewRadius)
+		{
+			GameObject target = c.gameObject;
+			if(target != null){
+				Vector3 dirToTarget = (target.transform.position - transform.position).normalized;
+
+				if (Vector3.Angle(transform.forward, dirToTarget) < MyAgent.Settings.ViewAngle / 2)
+				{
+					float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
+
+					RaycastHit hitInfo;
+					if (Physics.Raycast(transform.position, dirToTarget, out hitInfo, dstToTarget, MyAgent.Settings.ObstacleMask) 
+						&& (hitInfo.collider.gameObject.GetInstanceID() == target.GetInstanceID()))
+					{
+						visibleTargets.Add(target);
+					}
+				}
+		}
+		}
+
+		return visibleTargets;
+	}
+
 	public bool isFireInSight(){
 		List<GameObject> visibleTargets = new List<GameObject>();
 		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, MyAgent.Settings.ViewRadius, MyAgent.Settings.FireMask); // layer indications
 
 		int i = 0;
-		while (i < targetsInViewRadius.Length && !visibleTargets.Any())
+		while (i < targetsInViewRadius.Length && visibleTargets.Count > 0)
 		{
 			GameObject target = targetsInViewRadius[i].gameObject.GetComponent<GameObject>();
-			if(isInsight(target)){visibleTargets.Add(target);}
+			if(isInSight(target)){visibleTargets.Add(target);}
 		}
 
-		return visibleTargets.Any();
+		return visibleTargets.Count > 0;
 	}
 
 	public List<GameObject> getGameObjectsInSight(LayerMask layer){
@@ -152,4 +179,13 @@ public class Perception : MonoBehaviour {
 		}
 		return inSight;
 	}
+
+	public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal = false)
+    {
+        if (!angleIsGlobal)
+        {
+            angleInDegrees += transform.eulerAngles.y;
+        }
+        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+    }
 }
