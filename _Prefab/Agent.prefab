@@ -24,9 +24,9 @@ GameObject:
   - component: {fileID: 136122215655168374}
   - component: {fileID: 23715210354220070}
   - component: {fileID: 114883301069251676}
-  - component: {fileID: 114180570923559764}
   - component: {fileID: 114587729085356596}
   - component: {fileID: 114078440272312832}
+  - component: {fileID: 114669326716979980}
   m_Layer: 8
   m_Name: Agent
   m_TagString: Untagged
@@ -114,17 +114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2456b4db53853342a1fd98aa7331070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114180570923559764
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1187518729536168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e173211fcb3a6514f8a08a498a901874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114587729085356596
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -142,6 +131,26 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 512
+  doorMask:
+    serializedVersion: 2
+    m_Bits: 0
+  indicationMask:
+    serializedVersion: 2
+    m_Bits: 0
+  fireMask:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &114669326716979980
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1187518729536168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 623a76db42a21d3459115b2f67bc46eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114883301069251676
 MonoBehaviour:
   m_ObjectHideFlags: 1

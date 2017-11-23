@@ -62,9 +62,9 @@ public class Perception {
 		isFire = false;
 		myAgent = agent;
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	public void Update () {
 		agentsInSight = getAgentsInSight();
 		agentsTooClose = getAgentsTooClose();
 		wallsInSight = getWallsInSight();
@@ -129,7 +129,7 @@ public class Perception {
 						visibleTargets.Add(target);
 					}
 				}
-		}
+		    }
 		}
 
 		return visibleTargets;
