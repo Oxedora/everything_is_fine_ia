@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Feelings : MonoBehaviour {
+public class Feelings {
 	[Range(0,1)]
 	private float anger;
 	public float Anger {
@@ -19,7 +19,7 @@ public class Feelings : MonoBehaviour {
 		}
 	}
 	// Use this for initialization
-	void Start () {
+	public Feelings () {
 		System.Random rand = new System.Random();
 		anger = (float) rand.Next(0, 3) / (float)10.0;
 		fear = (float) rand.Next(0, 5) / (float)10.0;

@@ -50,7 +50,7 @@ public class Belief {
 	}
 
 	public void UpdateMesoPosition(Perception p){
-		List<Agent> anyMesoToUpdate = myGroup.Intersect(p.AgentsInSight);
+		List<Agent> anyMesoToUpdate = myGroup.Group.Intersect(p.AgentsInSight);
 		foreach(Agent a in anyMesoToUpdate){
 			positionsOfMesoGroup(a) = a.transform.position;
 		}

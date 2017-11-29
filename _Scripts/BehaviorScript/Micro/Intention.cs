@@ -1,6 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class AgentAllowed : System.Attribute {
+	protected Type agentType;
+	public Type AgentType {
+		get { 
+			return agentType; 
+		}
+	}
+
+	public AgentAllowed(Type at) {
+		agentType = at;
+	}
+}
 
 public abstract class Intention {
 

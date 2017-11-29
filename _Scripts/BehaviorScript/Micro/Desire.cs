@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Reflection;
+using System;
 
 public class Desire {
 	private Dictionary<Intention, float> desires = new Dictionary<Intention, float>();
 
 	// Use this for initialization
-	public Desire (Agent agent) {
-		// pour chaque intention
-			// je l'ajoute dans le dictionnaire avec une valeur de priorité
+	public Desire (Type typeOfAgent) {
+		System.Random rand = new System.Random();
+		foreach (Type type in 
+            Assembly.GetAssembly(typeof(Intention)).GetTypes() // get all types of Intention
+            .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Intention)))) // checks that type is a non abstract subclass of Intention
+        {
+            desires.Add((Intention)Activator.CreateInstance(type, ""), (float) rand.Next(0, 10) / (float)10.0); // update dictionnary with this possible intention
+        }
 	}
 	
 	// Update is called once per frame
