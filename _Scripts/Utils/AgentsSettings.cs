@@ -129,6 +129,16 @@ public class AgentsSettings : MonoBehaviour{
 		}
 	}
 
+    // Checkpoint layer
+    public LayerMask checkpointMask;
+    public LayerMask CheckpointMask
+    {
+        get
+        {
+            return checkpointMask;
+        }
+    }
+
 
 	void Start() {
 		/*targetMask = LayerMask.GetMask("targetMask");

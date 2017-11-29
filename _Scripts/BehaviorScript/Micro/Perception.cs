@@ -45,6 +45,15 @@ public class Perception {
 		}
 	}
 
+    private List<GameObject> checkpointsInSight;
+    public List<GameObject> CheckpointsInSight
+    {
+        get
+        {
+            return checkpointsInSight;
+        }
+    }
+
 	private Agent myAgent;
 	public Agent MyAgent {
 		get {
@@ -60,6 +69,7 @@ public class Perception {
 		doorsInSight = new List<GameObject>();
 		indicationsInSight = new List<GameObject>();
 		fireInSight = new List<GameObject>();
+        checkpointsInSight = new List<GameObject>();
 		myAgent = agent;
 	}
 
@@ -71,6 +81,7 @@ public class Perception {
 		doorsInSight = getGameObjectsInSight(MyAgent.Settings.DoorMask);
 		indicationsInSight = getGameObjectsInSight(MyAgent.Settings.IndicationMask);
 		fireInSight = getGameObjectsInSight(MyAgent.Settings.FireMask);
+        checkpointsInSight = getGameObjectsInSight(MyAgent.Settings.CheckpointMask);
 	}
 
 	public List<Agent> getAgentsInSight(){
