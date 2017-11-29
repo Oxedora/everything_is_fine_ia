@@ -54,13 +54,6 @@ public class Perception {
         }
     }
 
-	private Agent myAgent;
-	public Agent MyAgent {
-		get {
-			return myAgent;
-		}
-	}
-
 	// Use this for initialization
 	public Perception(Agent agent) {
 		agentsInSight = new List<Agent>();
@@ -70,23 +63,22 @@ public class Perception {
 		indicationsInSight = new List<GameObject>();
 		fireInSight = new List<GameObject>();
         checkpointsInSight = new List<GameObject>();
-		myAgent = agent;
 	}
 
 	// Update is called once per frame
-	public void Update () {
-		agentsInSight = getAgentsInSight();
-		agentsTooClose = getAgentsTooClose();
-		wallsInSight = getWallsInSight();
-		doorsInSight = getGameObjectsInSight(MyAgent.Settings.DoorMask);
-		indicationsInSight = getGameObjectsInSight(MyAgent.Settings.IndicationMask);
-		fireInSight = getGameObjectsInSight(MyAgent.Settings.FireMask);
-        checkpointsInSight = getGameObjectsInSight(MyAgent.Settings.CheckpointMask);
+	public void Update (Agent myAgent) {
+		agentsInSight = getAgentsInSight(myAgent);
+		agentsTooClose = getAgentsTooClose(myAgent);
+		wallsInSight = getWallsInSight(myAgent);
+		doorsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.DoorMask);
+		indicationsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.IndicationMask);
+		fireInSight = getGameObjectsInSight(myAgent, myAgent.Settings.FireMask);
+        checkpointsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.CheckpointMask);
 	}
 
-	public List<Agent> getAgentsInSight(){
+	public List<Agent> getAgentsInSight(Agent myAgent){
 		List<Agent> visibleTargets = new List<Agent>();
-		List<GameObject> go = getGameObjectsInSight(MyAgent.Settings.TargetMask);
+		List<GameObject> go = getGameObjectsInSight(myAgent, myAgent.Settings.TargetMask);
 
 		foreach(GameObject g in go){
 			Agent target = g.GetComponent<Agent>();
@@ -98,18 +90,18 @@ public class Perception {
 		return visibleTargets;
 	}
 
-	public List<Agent> getAgentsTooClose(){
+	public List<Agent> getAgentsTooClose(Agent myAgent){
 		List<Agent> visibleTargets = new List<Agent>();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(MyAgent.transform.position, MyAgent.Settings.SafeSpace, MyAgent.Settings.TargetMask);
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(myAgent.transform.position, myAgent.Settings.SafeSpace, myAgent.Settings.TargetMask);
 
 		foreach (Collider c in targetsInViewRadius)
 		{
 			Agent target = c.gameObject.GetComponent<Agent>();
 			if(target != null){
-				Vector3 dirToTarget = (target.transform.position - MyAgent.transform.position).normalized;
+				Vector3 dirToTarget = (target.transform.position - myAgent.transform.position).normalized;
 				
-				float dstToTarget = Vector3.Distance(MyAgent.transform.position, target.transform.position);
-				if (!Physics.Raycast(MyAgent.transform.position, dirToTarget, dstToTarget, MyAgent.Settings.ObstacleMask))
+				float dstToTarget = Vector3.Distance(myAgent.transform.position, target.transform.position);
+				if (!Physics.Raycast(myAgent.transform.position, dirToTarget, dstToTarget, myAgent.Settings.ObstacleMask))
 				{
 					visibleTargets.Add(target);
 				}
@@ -119,22 +111,22 @@ public class Perception {
 		return visibleTargets;
 	}
 
-	public List<GameObject> getWallsInSight(){
+	public List<GameObject> getWallsInSight(Agent myAgent){
 		List<GameObject> visibleTargets = new List<GameObject>();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(MyAgent.transform.position, MyAgent.Settings.ViewRadius, MyAgent.Settings.ObstacleMask);
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(myAgent.transform.position, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
 
 		foreach (Collider c in targetsInViewRadius)
 		{
 			GameObject target = c.gameObject;
 			if(target != null){
-				Vector3 dirToTarget = (target.transform.position - MyAgent.transform.position).normalized;
+				Vector3 dirToTarget = (target.transform.position - myAgent.transform.position).normalized;
 
-				if (Vector3.Angle(MyAgent.transform.forward, dirToTarget) < MyAgent.Settings.ViewAngle / 2)
+				if (Vector3.Angle(myAgent.transform.forward, dirToTarget) < myAgent.Settings.ViewAngle / 2)
 				{
-					float dstToTarget = Vector3.Distance(MyAgent.transform.position, target.transform.position);
+					float dstToTarget = Vector3.Distance(myAgent.transform.position, target.transform.position);
 
 					RaycastHit hitInfo;
-					if (Physics.Raycast(MyAgent.transform.position, dirToTarget, out hitInfo, dstToTarget, MyAgent.Settings.ObstacleMask) 
+					if (Physics.Raycast(myAgent.transform.position, dirToTarget, out hitInfo, dstToTarget, myAgent.Settings.ObstacleMask) 
 						&& (hitInfo.collider.gameObject.GetInstanceID() == target.GetInstanceID()))
 					{
 						visibleTargets.Add(target);
@@ -146,29 +138,29 @@ public class Perception {
 		return visibleTargets;
 	}
 
-	public List<GameObject> getGameObjectsInSight(LayerMask layer){
+	public List<GameObject> getGameObjectsInSight(Agent myAgent, LayerMask layer){
 		List<GameObject> visibleTargets = new List<GameObject>();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(MyAgent.transform.position, MyAgent.Settings.ViewRadius, layer);
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(myAgent.transform.position, myAgent.Settings.ViewRadius, layer);
 
 		foreach (Collider c in targetsInViewRadius)
 		{
 			GameObject target = c.gameObject;
-			if(isInSight(target)){visibleTargets.Add(target);}
+			if(isInSight(myAgent, target)){visibleTargets.Add(target);}
 		}
 
 		return visibleTargets;
 	}
 
-	public bool isInSight(GameObject target){
+	public bool isInSight(Agent myAgent, GameObject target){
 		bool inSight = false;
 		if(target != null){
-				Vector3 dirToTarget = (target.transform.position - MyAgent.transform.position).normalized;
+				Vector3 dirToTarget = (target.transform.position - myAgent.transform.position).normalized;
 
-				if (Vector3.Angle(MyAgent.transform.forward, dirToTarget) < MyAgent.Settings.ViewAngle / 2)
+				if (Vector3.Angle(myAgent.transform.forward, dirToTarget) < myAgent.Settings.ViewAngle / 2)
 				{
-					float dstToTarget = Vector3.Distance(MyAgent.transform.position, target.transform.position);
+					float dstToTarget = Vector3.Distance(myAgent.transform.position, target.transform.position);
 
-					if (!Physics.Raycast(MyAgent.transform.position, dirToTarget, dstToTarget, MyAgent.Settings.ObstacleMask))
+					if (!Physics.Raycast(myAgent.transform.position, dirToTarget, dstToTarget, myAgent.Settings.ObstacleMask))
 					{
 						inSight = true;
 					}
@@ -177,11 +169,11 @@ public class Perception {
 		return inSight;
 	}
 
-	public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal = false)
+	public Vector3 DirFromAngle(Agent myAgent, float angleInDegrees, bool angleIsGlobal = false)
     {
         if (!angleIsGlobal)
         {
-            angleInDegrees += MyAgent.transform.eulerAngles.y;
+            angleInDegrees += myAgent.transform.eulerAngles.y;
         }
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
