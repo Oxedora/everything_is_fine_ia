@@ -21,12 +21,13 @@ public class Feelings : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		System.Random rand = new System.Random();
-		anger = (float) rand.Next(0, 10) / (float)10.0;
-		fear = (float) rand.Next(0, 10) / (float)10.0;
+		anger = (float) rand.Next(0, 3) / (float)10.0;
+		fear = (float) rand.Next(0, 5) / (float)10.0;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	public void UpdateFeelings (Perception p) {
+		fear += (float) 0.1 * p.FireInSight.Count;
+
 	}
 }

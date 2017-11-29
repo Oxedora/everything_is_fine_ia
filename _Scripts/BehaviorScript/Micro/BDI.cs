@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BDI : MonoBehaviour {
+public class BDI {
 	private Belief belief;
 	public Belief myBelief {
 		get {
@@ -45,9 +45,22 @@ public class BDI : MonoBehaviour {
 		}
 	}
 
+	private Agent myAgent;
+	public Agent MyAgent {
+		get {
+			return myAgent;
+		}
+	}
+
 	// Use this for initialization
-	void Start () {
-		perception = new Perception(GetComponent<Agent>());
+	public BDI (Agent agent) {
+		myAgent = agent;
+		belief = new Belief(agent);
+		desire = new Desire(agent);
+		intention = null;
+		perception = new Perception(agent);
+		feelings = new Feelings(agent);
+		reasoning = new Reasoning(agent);
 	}
 	
 	// Update is called once per frame

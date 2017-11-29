@@ -38,10 +38,10 @@ public class Perception {
 		}
 	}
 
-	private bool isFire;
-	public bool IsFire {
+	private List<GameObject> fireInSight;
+	public List<GameObject> FireInSight {
 		get {
-			return isFire;
+			return fireInSight;
 		}
 	}
 
@@ -59,7 +59,7 @@ public class Perception {
 		wallsInSight = new List<GameObject>();
 		doorsInSight = new List<GameObject>();
 		indicationsInSight = new List<GameObject>();
-		isFire = false;
+		fireInSight = new List<GameObject>();
 		myAgent = agent;
 	}
 
@@ -70,7 +70,7 @@ public class Perception {
 		wallsInSight = getWallsInSight();
 		doorsInSight = getGameObjectsInSight(MyAgent.Settings.DoorMask);
 		indicationsInSight = getGameObjectsInSight(MyAgent.Settings.IndicationMask);
-		isFire = isFireInSight();
+		fireInSight = getGameObjectsInSight(MyAgent.Settings.FireMask);
 	}
 
 	public List<Agent> getAgentsInSight(){
@@ -133,20 +133,6 @@ public class Perception {
 		}
 
 		return visibleTargets;
-	}
-
-	public bool isFireInSight(){
-		List<GameObject> visibleTargets = new List<GameObject>();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(MyAgent.transform.position, MyAgent.Settings.ViewRadius, MyAgent.Settings.FireMask); // layer indications
-
-		int i = 0;
-		while (i < targetsInViewRadius.Length && visibleTargets.Count > 0)
-		{
-			GameObject target = targetsInViewRadius[i].gameObject.GetComponent<GameObject>();
-			if(isInSight(target)){visibleTargets.Add(target);}
-		}
-
-		return visibleTargets.Count > 0;
 	}
 
 	public List<GameObject> getGameObjectsInSight(LayerMask layer){
