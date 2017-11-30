@@ -136,10 +136,13 @@ MonoBehaviour:
     m_Bits: 0
   indicationMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   fireMask:
     serializedVersion: 2
     m_Bits: 0
+  checkpointMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &114669326716979980
 MonoBehaviour:
   m_ObjectHideFlags: 1
