@@ -23,11 +23,11 @@ public class Desire {
 	}
 	
 	// Update is called once per frame
-	public Intention Update (Intention agentIntention) {
+	public Intention Update (Agent agent, Intention agentIntention) {
 		if(agentIntention != null){ return agentIntention; }
 		Intention ind = null;
-		foreach(Intention i in desires){
-			if(desires[i] >= agent.Fear){
+		foreach(Intention i in desires.Keys){
+			if(desires[i] >= agent.Bdi.myFeelings.Fear){
 				if(ind == null){ind = i;}
 				if(desires[i] < desires[ind]){
 					ind = i;

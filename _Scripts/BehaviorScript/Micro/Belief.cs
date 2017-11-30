@@ -11,13 +11,6 @@ public class Belief {
 		}
 	}
 
-	private Dictionary<Agent, Vector3> positionsOfMesoGroup;
-	public Dictionary<Agent, Vector3> PositionsOfMesoGroup {
-		get {
-			return positionsOfMesoGroup;
-		}
-	}
-
 	// sous quelle forme stocker l'indication de la sortie ?
 	private Vector3 indication;
 	public Vector3 Indication {
@@ -35,9 +28,6 @@ public class Belief {
 
 	public Belief(MesoGroup mg, Vector3 i, List<Node> p){
 		myGroup = mg;
-		foreach(Agent a in myGroup.Group){
-			positionsOfMesoGroup.Add(a, a.transform.position);
-		}
 		indication = i;
 		path = p;
 	}
@@ -50,9 +40,8 @@ public class Belief {
 	}
 
 	public void UpdateMesoPosition(Perception p){
-		List<Agent> anyMesoToUpdate = myGroup.Group.Intersect(p.AgentsInSight);
-		foreach(Agent a in anyMesoToUpdate){
-			positionsOfMesoGroup(a) = a.transform.position;
+		foreach(Agent a in MesoInSight(p.AgentsInSight)){
+			myGroup.Group[a] = a.transform.position;
 		}
 	}
 
@@ -60,11 +49,24 @@ public class Belief {
 		List<GameObject> indicationsInSight = p.IndicationsInSight;
 		if(indicationsInSight.Count > 0){
 			System.Random rand = new System.Random();
-			indication = indicationsInSight(rand.Next(0, indicationsInSight.Count));
+			indication = indicationsInSight[rand.Next(0, indicationsInSight.Count)].transform.position;
 		}
 	}
 
 	public void UpdatePath(Perception p){
 
+	}
+
+	public List<Agent> MesoInSight(List<Agent> agentsInSight){
+		List<Agent> mesoInSight = new List<Agent>();
+		foreach(Agent a in myGroup.Group.Keys){
+			foreach(Agent b in agentsInSight){
+				if(a.Equals(b)){
+					mesoInSight.Add(a);
+					break;
+				}
+			}
+		}
+		return mesoInSight;
 	}
 }

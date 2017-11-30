@@ -42,16 +42,16 @@ public class Agent : MonoBehaviour {
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		settings = GetComponent<AgentsSettings>();
-		flocking = GetComponent<Flock>();
-		bdi = GetComponent<BDI>();
+		flocking = new Flock(this);
+		bdi = new BDI(this);
 	}
 	
 	// Update is called once per frame
 	void Update () {
         List<Agent> neighbors = bdi.myPerception.AgentsInSight;
 
-        Vector3 viewAngleA = bdi.myPerception.DirFromAngle(- settings.ViewAngle / 2, false);
-        Vector3 viewAngleB = bdi.myPerception.DirFromAngle(settings.ViewAngle / 2, false);
+        Vector3 viewAngleA = bdi.myPerception.DirFromAngle(this, - settings.ViewAngle / 2, false);
+        Vector3 viewAngleB = bdi.myPerception.DirFromAngle(this, settings.ViewAngle / 2, false);
 
         Debug.DrawLine(transform.position, transform.position + viewAngleA * settings.ViewRadius);
         Debug.DrawLine(transform.position, transform.position + viewAngleB * settings.ViewRadius);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flock : MonoBehaviour {
+public class Flock {
 
 	private Agent myAgent;
 	public Agent MyAgent{
@@ -12,13 +12,8 @@ public class Flock : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
-		myAgent = GetComponent<Agent>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public Flock (Agent a) {
+		myAgent = a;
 	}
 
 	public Vector3 Flocking(List<Agent> neighbors){
@@ -78,11 +73,11 @@ public class Flock : MonoBehaviour {
 		Vector3 coh = Vector3.zero;
 
 		foreach(Agent a in neighbors){
-			coh += a.transform.position - transform.position;
+			coh += a.transform.position - myAgent.transform.position;
 		}
 		//Debug.Log("cohesion vector : " + coh + " pour l'agent " + gameObject.name);
 		//if(neighbors.Count > 0){coh = coh / (float) neighbors.Count;}
-		Debug.Log("cohesion vector : " + coh + " pour l'agent " + gameObject.name);
+		Debug.Log("cohesion vector : " + coh + " pour l'agent " + myAgent.gameObject.name);
 
         coh.y = 0;
 
@@ -93,21 +88,21 @@ public class Flock : MonoBehaviour {
 		Vector3 dod = Vector3.zero;
 		
 		RaycastHit hitInfo, hitInfoLeft, hitInfoRight;
-		Vector3 fwd = transform.TransformDirection(Vector3.forward);
-		if(Physics.Raycast(transform.position, fwd, out hitInfo, myAgent.Settings.SafeSpace, myAgent.Settings.ObstacleMask)){
-            Debug.DrawLine(transform.position, hitInfo.point, Color.magenta);
-            dod = transform.position - hitInfo.point;
+		Vector3 fwd = myAgent.transform.TransformDirection(Vector3.forward);
+		if(Physics.Raycast(myAgent.transform.position, fwd, out hitInfo, myAgent.Settings.SafeSpace, myAgent.Settings.ObstacleMask)){
+            Debug.DrawLine(myAgent.transform.position, hitInfo.point, Color.magenta);
+            dod = myAgent.transform.position - hitInfo.point;
 			float ratio = dod.magnitude / (float) myAgent.Settings.ViewRadius;
 			float angle = myAgent.Settings.ViewAngle - myAgent.Settings.ViewAngle * ratio;
-			dod = myAgent.Bdi.myPerception.DirFromAngle(angle);
+			dod = myAgent.Bdi.myPerception.DirFromAngle(myAgent, angle);
 
-            Vector3 left = transform.TransformDirection(Vector3.left);
-            Vector3 right = transform.TransformDirection(Vector3.right);
+            Vector3 left = myAgent.transform.TransformDirection(Vector3.left);
+            Vector3 right = myAgent.transform.TransformDirection(Vector3.right);
 
-            Physics.Raycast(transform.position, left, out hitInfoLeft, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
-            Physics.Raycast(transform.position, right, out hitInfoRight, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
+            Physics.Raycast(myAgent.transform.position, left, out hitInfoLeft, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
+            Physics.Raycast(myAgent.transform.position, right, out hitInfoRight, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
 
-            dod = myAgent.Bdi.myPerception.DirFromAngle((Vector3.Distance(transform.position, hitInfoLeft.point) > Vector3.Distance(transform.position, hitInfoRight.point) ? -angle : angle));
+            dod = myAgent.Bdi.myPerception.DirFromAngle(myAgent, (Vector3.Distance(myAgent.transform.position, hitInfoLeft.point) > Vector3.Distance(myAgent.transform.position, hitInfoRight.point) ? -angle : angle));
         }
 
         dod.y = 0;

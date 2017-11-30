@@ -5,7 +5,6 @@ using UnityEngine;
 [AgentAllowed(typeof(Adult))]
 [AgentAllowed(typeof(Elder))]
 [AgentAllowed(typeof(Worker))]
-[AgentAllowed(typeof(Adult))]
 public class GetOut : Intention {
 
 	public GetOut() : base() {}

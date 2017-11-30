@@ -55,16 +55,16 @@ public class BDI {
 	// Use this for initialization
 	public BDI (Agent agent) {
 		myAgent = agent;
-		belief = new Belief(new MesoGroup(new List<Agent>()), new Vector3(), new List<Node>());
+		belief = new Belief(new MesoGroup(new Dictionary<Agent, Vector3?>()), new Vector3(), new List<Node>());
 		desire = new Desire(agent.GetType());
 		intention = null;
-		perception = new Perception();
+		perception = new Perception(myAgent);
 		feelings = new Feelings();
 		reasoning = new Reasoning();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        perception.Update();
+	public void UpdateBDI () {
+        perception.Update(myAgent);
 	}
 }

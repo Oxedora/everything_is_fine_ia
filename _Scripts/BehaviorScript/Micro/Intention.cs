@@ -35,10 +35,10 @@ public abstract class Intention {
 	}
 	
 	// Update is called once per frame
-	private Vector3 Update (Agent myAgent, Perception p) {
+/*	private Vector3 Update (Agent myAgent, Perception p) {
 		Vector3 dir = Reflexes(myAgent, p);
 		return (dir.magnitude > 0 ? dir : currentState());
-	}
+	}*/
 
 	private Vector3 DefaultState() {return Vector3.zero;}
 
