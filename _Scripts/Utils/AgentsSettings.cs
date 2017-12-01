@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // Contains all settings for every agents
-public class AgentsSettings : MonoBehaviour{
+public class AgentsSettings {
 
 	// Perception radius
 	private float viewRadius = 20.0f;
@@ -86,6 +86,14 @@ public class AgentsSettings : MonoBehaviour{
 	public float DodgingAngle {
 		get {
 			return dodgingAngle;
+		}
+	}
+
+	[Range(0.0f, 1.0f)]
+	private float ratioFear = 0.7f;
+	public float RatioFear {
+		get {
+			return ratioFear;
 		}
 	}
 

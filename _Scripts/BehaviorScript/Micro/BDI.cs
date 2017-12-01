@@ -22,6 +22,9 @@ public class BDI {
 		get {
 			return intention;
 		}
+		set {
+			intention = value;
+		}
 	}
 
 	private Perception perception;

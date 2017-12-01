@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Feelings {
-	[Range(0,1)]
+	[Range(0.0f, 1.0f)]
 	private float anger;
 	public float Anger {
 		get {
@@ -11,11 +11,14 @@ public class Feelings {
 		}
 	}
 
-	[Range(0,1)]
+	[Range(0.0f, 1.0f)]
 	private float fear;
 	public float Fear {
 		get {
 			return fear;
+		}
+		set {
+			fear = (value > 1.0f ? 1.0 : value);
 		}
 	}
 	// Use this for initialization
