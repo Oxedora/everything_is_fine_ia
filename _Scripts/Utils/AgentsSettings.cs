@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // Contains all settings for every agents
-public class AgentsSettings {
+public class AgentsSettings : MonoBehaviour {
 
 	// Perception radius
 	private float viewRadius = 20.0f;
@@ -147,11 +147,14 @@ public class AgentsSettings {
         }
     }
 
+    private void Start()
+    {
+        
+    }
 
-	void Start() {
-		/*targetMask = LayerMask.GetMask("targetMask");
-		obstacleMask = LayerMask.GetMask("obstacleMask");*/
-	}
+    private void Update()
+    {
+        
+    }
 
-    
 }

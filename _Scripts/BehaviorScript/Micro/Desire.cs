@@ -23,7 +23,7 @@ public class Desire {
             Assembly.GetAssembly(typeof(Intention)).GetTypes() // get all types of Intention
             .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Intention)))) // checks that type is a non abstract subclass of Intention
         {
-            desires.Add((Intention)Activator.CreateInstance(type, ""), (float) rand.Next(0, 10) / (float)10.0); // update dictionnary with this possible desire
+            desires.Add((Intention)Activator.CreateInstance(type), (float) rand.Next(0, 10) / (float)10.0); // update dictionnary with this possible desire
         }
 	}
 	

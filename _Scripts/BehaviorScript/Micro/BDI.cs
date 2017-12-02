@@ -60,7 +60,7 @@ public class BDI {
 		myAgent = agent;
 		belief = new Belief(new MesoGroup(new Dictionary<Agent, Vector3?>()), new Vector3(), new List<Node>());
 		desire = new Desire(agent.GetType());
-		intention = null;
+		intention = new GetOut();
 		perception = new Perception(myAgent);
 		feelings = new Feelings();
 		reasoning = new Reasoning();

@@ -77,7 +77,7 @@ public class Flock {
 		}
 		//Debug.Log("cohesion vector : " + coh + " pour l'agent " + gameObject.name);
 		//if(neighbors.Count > 0){coh = coh / (float) neighbors.Count;}
-		Debug.Log("cohesion vector : " + coh + " pour l'agent " + myAgent.gameObject.name);
+		//Debug.Log("cohesion vector : " + coh + " pour l'agent " + myAgent.gameObject.name);
 
         coh.y = 0;
 
@@ -86,7 +86,6 @@ public class Flock {
 
 	private Vector3 Dodge(){
 		Vector3 dod = Vector3.zero;
-		
 		RaycastHit hitInfo, hitInfoLeft, hitInfoRight;
 		Vector3 fwd = myAgent.transform.TransformDirection(Vector3.forward);
 		if(Physics.Raycast(myAgent.transform.position, fwd, out hitInfo, myAgent.Settings.SafeSpace, myAgent.Settings.ObstacleMask)){

@@ -15,8 +15,8 @@ public class LookForRelative : Intention {
 
 	public LookForRelative() : base() {}
 
-	private void DefaultState(){
-
+	public override Vector3 DefaultState(Agent agent){
+        return Vector3.zero;
 	}
 
 	private void WhichMesoMember(Agent myAgent){
