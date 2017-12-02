@@ -37,6 +37,29 @@ public class Agent : MonoBehaviour {
     	}
     }
 
+    private bool onCheckpoint = false;
+    public bool OnCheckpoint
+    {
+        get
+        {
+            return onCheckpoint;
+        }
+
+        set
+        {
+            onCheckpoint = value;
+        }
+    }
+
+    private Dictionary<GameObject, int> checkedPoints;
+    public Dictionary<GameObject, int> CheckedPoints
+    {
+        get
+        {
+            return CheckedPoints;
+        }
+    }
+
 
 	// Use this for initialization
 	void Start () {
@@ -44,6 +67,7 @@ public class Agent : MonoBehaviour {
 		settings = GetComponent<AgentsSettings>();
 		flocking = new Flock(this);
 		bdi = new BDI(this);
+        checkedPoints = new Dictionary<GameObject, int>();
 	}
 	
 	// Update is called once per frame
@@ -65,6 +89,23 @@ public class Agent : MonoBehaviour {
         Debug.DrawLine(transform.position, destination, Color.black);
         rb.velocity = (force.Equals(Vector3.zero) ? (Vector3)transform.TransformDirection(Vector3.forward) : force) * settings.MaxSpeed;
         transform.rotation = Quaternion.LookRotation(rb.velocity);
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer.Equals(settings.CheckpointMask))
+        {
+            onCheckpoint = true;
+            if(checkedPoints.Keys.Contains(collision.gameObject))
+            {
+                checkedPoints[collision.gameObject]++;
+            }
+            else
+            {
+                checkedPoints.Add(collision.gameObject, 0);
+            }
+        }
     }
 
 }
