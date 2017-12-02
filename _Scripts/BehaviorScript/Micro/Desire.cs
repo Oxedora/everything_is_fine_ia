@@ -5,6 +5,11 @@ using System.Linq;
 using System.Reflection;
 using System;
 
+/// <Summary>
+/// States the agent wants to see realized and their ratio of priorities
+/// One the desires are fixed they have no purpose of changing
+/// Only their priority may change depending of the agent belief
+/// </Summary>
 public class Desire {
 	private Dictionary<Intention, float> desires = new Dictionary<Intention, float>();
 
@@ -22,12 +27,16 @@ public class Desire {
         }
 	}
 	
-	// Update is called once per frame
-	public Intention Update (Agent agent, Intention agentIntention) {
+	/// <Summary>
+	/// Returns the agent intention if he has one, the suitable intention based on his fear if he has none
+	/// </Summary>
+	/// <param name="fear"> the agent ratio of fear </param>
+	/// <param name="agentIntention"> the agent current intention </param>
+	public Intention Update (float fear, Intention agentIntention) {
 		if(agentIntention != null){ return agentIntention; }
 		Intention ind = null;
 		foreach(Intention i in desires.Keys){
-			if(desires[i] >= agent.Bdi.myFeelings.Fear){
+			if(desires[i] >= fear){
 				if(ind == null){ind = i;}
 				if(desires[i] < desires[ind]){
 					ind = i;
