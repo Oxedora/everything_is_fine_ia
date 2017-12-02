@@ -18,7 +18,7 @@ public class Feelings {
 			return fear;
 		}
 		set {
-			fear = (value > 1.0f ? 1.0 : value);
+			fear = (value > 1.0f ? 1.0f : value);
 		}
 	}
 	// Use this for initialization

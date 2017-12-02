@@ -18,9 +18,10 @@ public class Reasoning {
     /// <param name="i"> Agent current intention, null if he has none </param>
     /// <param name="d"> Agent desires </param>
     /// <param name="f"> Agent feelings </param>
+    /// <param name="p"> Agent perceptions </param>
     /// <param name="ratioFear"> Agent treshold before going mad </param>
     /// <param name="position"> Agent position </param>
-	public Vector3 UpdateReasoning (Intention i, Desire d, Feelings f, float ratioFear, Vector3 position) {
+	public Vector3 UpdateReasoning (Intention i, Desire d, Feelings f, Perception p, float ratioFear, Vector3 position) {
         Vector3 reflexeDir = Vector3.zero;
 
         if (p.FireInSight.Count > 0)
@@ -35,7 +36,7 @@ public class Reasoning {
 
         if (p.FireInSight.Count > 0)
         {
-            reflexeDir = DodgeObjects(myAgent, p.FireInSight);
+            reflexeDir = DodgeObjects(position, p.FireInSight);
         }
         else {
             i = d.Update(f.Fear, i);
