@@ -80,6 +80,17 @@ public class AgentsSettings : MonoBehaviour {
 		}
 	}
 
+    // Coeff for Intention
+    [Range(0.0f, 1.0f)]
+    private float coeffI = 0.7f;
+    public float CoeffI
+    {
+        get
+        {
+            return coeffI;
+        }
+    }
+
 	// Angle for dodging
 	[Range(0, 180)]
 	private float dodgingAngle = 30.0f;

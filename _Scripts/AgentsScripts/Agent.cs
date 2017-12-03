@@ -37,8 +37,8 @@ public class Agent : MonoBehaviour {
     	}
     }
 
-    private bool onCheckpoint = false;
-    public bool OnCheckpoint
+    private GameObject onCheckpoint = null;
+    public GameObject OnCheckpoint
     {
         get
         {
@@ -78,64 +78,40 @@ public class Agent : MonoBehaviour {
         bdi.UpdateBDI();
         List<Agent> neighbors = bdi.myPerception.AgentsInSight;
 
-        Vector3 viewAngleA = bdi.myPerception.DirFromAngle(this, - settings.ViewAngle / 2, false);
-        Vector3 viewAngleB = bdi.myPerception.DirFromAngle(this, settings.ViewAngle / 2, false);
+        //Vector3 viewAngleA = bdi.myPerception.DirFromAngle(this, - settings.ViewAngle / 2, false);
+        //Vector3 viewAngleB = bdi.myPerception.DirFromAngle(this, settings.ViewAngle / 2, false);
 
-        Debug.DrawLine(transform.position, transform.position + viewAngleA * settings.ViewRadius);
-        Debug.DrawLine(transform.position, transform.position + viewAngleB * settings.ViewRadius);
+        //Debug.DrawLine(transform.position, transform.position + viewAngleA * settings.ViewRadius);
+        //Debug.DrawLine(transform.position, transform.position + viewAngleB * settings.ViewRadius);
 
-        foreach(Agent a in neighbors){
-            Debug.DrawLine(transform.position, a.transform.position, Color.yellow);
-        }
+        //foreach(Agent a in neighbors){
+        //    Debug.DrawLine(transform.position, a.transform.position, Color.yellow);
+        //}
 
-        Vector3 force = flocking.Flocking(neighbors) + intentionDirection;
+        Vector3 force = (intentionDirection.Equals(Vector3.zero) ? flocking.Flocking(neighbors) : (1-settings.CoeffI)*flocking.Flocking(neighbors) + settings.CoeffI * intentionDirection);
         Vector3 destination = transform.position + force.normalized;
-        Debug.DrawLine(transform.position, destination, Color.black);
-        rb.velocity = (force.Equals(Vector3.zero) ? (Vector3)transform.TransformDirection(Vector3.forward) : force) * settings.MaxSpeed;
+        //Debug.DrawLine(transform.position, destination, Color.black);
+        rb.velocity = (force.Equals(Vector3.zero) ? (Vector3)transform.TransformDirection(Vector3.forward) : (destination - transform.position).normalized ) * settings.MaxSpeed;
         transform.rotation = Quaternion.LookRotation(rb.velocity);
     }
 
-
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if(collision.gameObject.layer.Equals(settings.CheckpointMask))
-    //    {
-    //        Debug.Log("CHECKPOOOOOOOOOOOINT " + collision.gameObject.name);
-    //        onCheckpoint = true;
-    //        if(checkedPoints.Keys.Contains(collision.gameObject))
-    //        {
-    //            checkedPoints[collision.gameObject]++;
-    //        }
-    //        else
-    //        {
-    //            checkedPoints.Add(collision.gameObject, 0);
-    //        }
-    //    }
-    //}
-
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("What is that trigger my dear ?");
-        //Debug.Log(collision.gameObject.layer.ToString()+", And layer mask value : "+ settings.CheckpointMask.ToString());
-        if ((settings.CheckpointMask & 1 << collision.gameObject.layer) == 1 << collision.gameObject.layer)
+        if (collision.gameObject.tag.Equals("Checkpoint"))
         {
-            if(collision.gameObject.tag.Equals("Exit"))
+            onCheckpoint = collision.gameObject;
+            if (checkedPoints.Keys.Contains(collision.gameObject))
             {
-                gameObject.SetActive(false);
+                checkedPoints[collision.gameObject]++;
             }
             else
             {
-                Debug.Log("CHECKPOOOOOOOOOOOINT " + collision.gameObject.name);
-                onCheckpoint = true;
-                if (checkedPoints.Keys.Contains(collision.gameObject))
-                {
-                    checkedPoints[collision.gameObject]++;
-                }
-                else
-                {
-                    checkedPoints.Add(collision.gameObject, 0);
-                }
+                checkedPoints.Add(collision.gameObject, 0);
             }
+        }
+        else if (collision.gameObject.tag.Equals("Exit"))
+        {
+            gameObject.SetActive(false);
         }
     }
 

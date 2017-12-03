@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[AgentAllowed(typeof(Agent))]
 [AgentAllowed(typeof(Adult))]
 public class LookForRelative : Intention {
     private Agent agentToFetch;
