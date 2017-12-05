@@ -11,36 +11,33 @@ using System;
 /// Only their priority may change depending of the agent belief
 /// </Summary>
 public class Desire {
-	private Dictionary<Intention, float> desires = new Dictionary<Intention, float>();
+	private List<Intention> desires = new List<Intention>();
 
 	/// <Summary>
 	/// Gets all Intentions suitable for the given type of Agent
 	/// </Summary>
 	/// <param name="typeOfAgent"> Type of the agent : Adult, Elder, Kid, Disabled, Worker </param>
 	public Desire (Type typeOfAgent) {
-		System.Random rand = new System.Random(); // random priority will be set for every desire
 		foreach (Type type in 
             Assembly.GetAssembly(typeof(Intention)).GetTypes() // get all types of Intention
             .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Intention)))) // checks that type is a non abstract subclass of Intention
         {
-            desires.Add((Intention)Activator.CreateInstance(type), (float) rand.Next(0, 10) / (float)10.0); // update dictionnary with this possible desire
+            desires.Add((Intention)Activator.CreateInstance(type)); // update dictionnary with this possible desire
         }
 	}
 	
 	/// <Summary>
 	/// Returns the agent intention if he has one, the suitable intention based on his fear if he has none
 	/// </Summary>
-	/// <param name="fear"> the agent ratio of fear </param>
-	/// <param name="agentIntention"> the agent current intention </param>
-	public Intention Update (float fear, Intention agentIntention) {
-		if(agentIntention != null){ return agentIntention; }
+	/// <param name="agent"> the current agent updating his desires priority </param>
+	public Intention DesiredIntention (Agent agent) {
 		Intention ind = null;
-		foreach(Intention i in desires.Keys){
-			if(desires[i] >= fear){
-				if(ind == null){ind = i;}
-				if(desires[i] < desires[ind]){
-					ind = i;
-				}
+		float prio = 0.0;
+		foreach(Intention i in desires){
+			i.UpdatePriority(agent);
+			if(i.Priority >= prio){
+				prio = i.Priority;
+				ind = i;
 			}
 		}
 		return ind;
