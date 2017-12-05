@@ -15,32 +15,28 @@ public class Reasoning {
 	/// <Summary>
     /// Execute the agent reflexes, update his intention otherwise
     /// </Summary>
-    /// <param name="i"> Agent current intention, null if he has none </param>
-    /// <param name="d"> Agent desires </param>
-    /// <param name="f"> Agent feelings </param>
-    /// <param name="p"> Agent perceptions </param>
-    /// <param name="ratioFear"> Agent treshold before going mad </param>
-    /// <param name="position"> Agent position </param>
-	public Vector3 UpdateReasoning (Intention i, Desire d, Feelings f, Perception p, float ratioFear, Vector3 position) {
+    /// <param name="agent">The agent that needs his reasoning updated </param>
+	public Vector3 UpdateReasoning (Agent agent) {
         Vector3 reflexeDir = Vector3.zero;
 
-        if (p.FireInSight.Count > 0)
-        {
-            f.Fear += p.FireInSight.Count * 0.1f;
-        }
+        //if (agent.Bdi.myPerception.FireInSight.Count > 0)
+        //{
+        //    agent.Bdi.myFeelings.Fear += agent.Bdi.myPerception.FireInSight.Count * 0.1f;
+        //}
         // If he dies, he dies
-		if(f.Fear >= ratioFear){
-			i = null;
+		if(agent.Bdi.myFeelings.Fear >= agent.Settings.RatioFear){
+			agent.Bdi.myIntention = null;
+            Debug.Log(agent.gameObject.name + " est figé par la peur");
             // rajouter la fifolie
             return reflexeDir;
 		}
 
-        if (p.FireInSight.Count > 0)
+        if (agent.Bdi.myPerception.FireInSight.Count > 0)
         {
-            reflexeDir = DodgeObjects(position, p.FireInSight);
+            reflexeDir = DodgeObjects(agent.transform.position, agent.Bdi.myPerception.FireInSight);
         }
         else {
-            i = d.Update(f.Fear, i); // ligne à modif pour les intentions
+            agent.Bdi.myIntention = agent.Bdi.myDesire.DesiredIntention(agent); // ligne à modif pour les intentions
         }
 
         return reflexeDir; 

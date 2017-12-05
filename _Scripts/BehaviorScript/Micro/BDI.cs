@@ -60,14 +60,17 @@ public class BDI {
 		myAgent = agent;
 		belief = new Belief();
 		desire = new Desire(agent.GetType());
-		intention = new GetOut();
+        intention = null;
 		perception = new Perception(myAgent);
 		feelings = new Feelings();
 		reasoning = new Reasoning();
 	}
 	
 	// Update is called once per frame
-	public void UpdateBDI () {
+	public Vector3 UpdateBDI () {
         perception.Update(myAgent);
+        belief.Update(perception);
+        feelings.UpdateFeelings(perception);
+        return reasoning.UpdateReasoning(myAgent);
 	}
 }

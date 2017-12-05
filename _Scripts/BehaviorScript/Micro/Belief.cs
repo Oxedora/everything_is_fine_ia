@@ -45,7 +45,19 @@ public class Belief {
             return checkedPoints;
         }
     }
-	
+
+    private GameObject cpTarget = null;
+    public GameObject CpTarget
+    {
+        get
+        {
+            return cpTarget;
+        }
+        set
+        {
+            cpTarget = value;
+        }
+    }
 
     public Belief() {}
     

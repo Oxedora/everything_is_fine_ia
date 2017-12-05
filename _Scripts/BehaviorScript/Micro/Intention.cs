@@ -36,22 +36,9 @@ public abstract class Intention {
         }
     }
 
-	private ActionDelegate currentState;
-	public ActionDelegate CurrentState {
-		get {
-			return currentState;
-		}
-	}
-
 	// Use this for initialization
 	public Intention() {
 	}
-
-    // Update is called once per frame
-    /*	private Vector3 Update (Agent myAgent, Perception p) {
-            Vector3 dir = Reflexes(myAgent, p);
-            return (dir.magnitude > 0 ? dir : currentState());
-        }*/
 
     public abstract Vector3 DefaultState(Agent agent);
 

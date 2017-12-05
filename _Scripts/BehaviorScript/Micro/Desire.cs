@@ -32,7 +32,7 @@ public class Desire {
 	/// <param name="agent"> the current agent updating his desires priority </param>
 	public Intention DesiredIntention (Agent agent) {
 		Intention ind = null;
-		float prio = 0.0;
+		float prio = 0.0f;
 		foreach(Intention i in desires){
 			i.UpdatePriority(agent);
 			if(i.Priority >= prio){

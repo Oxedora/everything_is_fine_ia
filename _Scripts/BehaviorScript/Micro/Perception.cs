@@ -73,10 +73,6 @@ public class Perception {
 		doorsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.DoorMask);
 		indicationsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.IndicationMask);
 		fireInSight = getGameObjectsInSight(myAgent, myAgent.Settings.FireMask);
-        if(fireInSight.Count >0)
-        {
-            Debug.Log("AU FEUUUUUUUU !");
-        }
         checkpointsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.CheckpointMask);
 	}
 
@@ -148,7 +144,6 @@ public class Perception {
 		foreach (Collider c in targetsInViewRadius)
 		{
 			GameObject target = c.gameObject;
-            Debug.DrawLine(myAgent.transform.position, target.transform.position, Color.grey);
 			if(isInSight(myAgent, target)){visibleTargets.Add(target);}
 		}
 

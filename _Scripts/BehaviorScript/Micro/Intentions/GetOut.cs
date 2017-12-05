@@ -13,14 +13,22 @@ public class GetOut : Intention {
 	public GetOut() : base() {}
 
 	public override Vector3 DefaultState(Agent agent){
-        
+        foreach(GameObject checkP in agent.Bdi.myPerception.CheckpointsInSight)
+        {
+            if(checkP.tag.Equals("Exit"))
+            {
+                agent.Bdi.myBelief.CpTarget = checkP;
+                return (agent.Bdi.myBelief.CpTarget.transform.position - agent.transform.position);
+            }
+        }
+
         // If i'm on a checkpoint, i choose another to go if any
 		if(agent.Bdi.myBelief.OnCheckpoint){
 			SelectCheckPoint(agent);
 		}
         // Else i follow the indications if any
 		else if(agent.Bdi.myBelief.CpTarget == null && agent.Bdi.myPerception.IndicationsInSight.Count > 0){
-			return FollowIndication(agent.transform.position, agent.Bdi.myPerception.IndicationsInSight[0]);
+			return FollowIndication(agent);
 		}
 		
 		return (agent.Bdi.myBelief.CpTarget  == null ? agent.transform.TransformDirection(Vector3.zero) : (agent.Bdi.myBelief.CpTarget.transform.position - agent.transform.position));
@@ -32,7 +40,7 @@ public class GetOut : Intention {
         // If i see an indications, i turn in the direction indicated
         if (agent.Bdi.myPerception.IndicationsInSight.Count > 0){
             //agent.transform.rotation = Quaternion.LookRotation(agent.Bdi.myPerception.IndicationsInSight[0].transform.TransformDirection(Vector3.forward));
-            agent.transform.rotation = Quaternion.LookRotation(FollowIndication(agent.transform.position, agent.Bdi.myPerception.IndicationsInSight[0]));
+            agent.transform.rotation = Quaternion.LookRotation(FollowIndication(agent));
 
         }
 
@@ -75,14 +83,30 @@ public class GetOut : Intention {
 		agent.Bdi.myBelief.OnCheckpoint = null;
 	}
 
-	private Vector3 FollowIndication(Vector3 position, GameObject indication){
-		return (Vector3.Distance(position, indication.transform.position) < 5 ? // if i am close enough
-			(Vector3) indication.transform.TransformDirection(Vector3.forward) : // i follow the indication
-			indication.transform.position - position); // otherwise i get closer
-	}
+	private Vector3 FollowIndication(Agent agent){
+        GameObject indication = agent.Bdi.myPerception.IndicationsInSight[0];
+
+        if(indication.Equals(agent.Bdi.myBelief.LastIndication)) // If that's the last indication i followed, i turn directly where it's indicating
+        {
+            return indication.transform.TransformDirection(Vector3.forward);
+        }
+        else if (Vector3.Distance(agent.transform.position, indication.transform.position) < 5) // Else, if i'm close enough, i set it and follow it
+        {
+            agent.Bdi.myBelief.LastIndication  = indication;
+            return indication.transform.TransformDirection(Vector3.forward);
+        }
+        else // Otherwise i get closer
+        {
+            return indication.transform.position - agent.transform.position;
+        }
+
+		//return (indication.Equals(lastIndication) || Vector3.Distance(position, indication.transform.position) < 5 ? // if i am close enough
+		//	(Vector3) indication.transform.TransformDirection(Vector3.forward) : // i follow the indication
+  //           indication.transform.position - position);// otherwise i get closer
+    }
 
     public override void UpdatePriority(Agent agent)
     {
-        Priority = agent.Bdi.myFeelings.Fear;
+        Priority = Math.Max(agent.Bdi.myFeelings.Fear, 0.1f);
     }
 }
