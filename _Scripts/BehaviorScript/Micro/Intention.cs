@@ -55,5 +55,5 @@ public abstract class Intention {
 
     public abstract Vector3 DefaultState(Agent agent);
 
-    public abstract void UpdatePriority(BDI bdi);
+    public abstract void UpdatePriority(Agent agent);
 }

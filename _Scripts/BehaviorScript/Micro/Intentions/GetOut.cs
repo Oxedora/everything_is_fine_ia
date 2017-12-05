@@ -81,8 +81,8 @@ public class GetOut : Intention {
 			indication.transform.position - position); // otherwise i get closer
 	}
 
-    public override void UpdatePriority(BDI bdi)
+    public override void UpdatePriority(Agent agent)
     {
-        Priority = bdi.myFeelings.Fear;
+        Priority = agent.Bdi.myFeelings.Fear;
     }
 }
