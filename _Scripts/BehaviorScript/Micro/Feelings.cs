@@ -30,7 +30,7 @@ public class Feelings {
 	
 	// Update is called once per frame
 	public void UpdateFeelings (Perception p) {
-		fear += (float) 0.1 * p.FireInSight.Count;
+		Fear += (float) 0.1 * p.FireInSight.Count;
 
 	}
 }

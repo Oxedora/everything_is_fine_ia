@@ -22,6 +22,20 @@ public abstract class Intention {
 	// Next state to execute
 	public delegate Vector3 ActionDelegate();
 
+    [Range(0f, 1f)]
+    private float priority;
+    public float Priority
+    {
+        get
+        {
+            return priority;
+        }
+        set
+        {
+            priority = value;
+        }
+    }
+
 	private ActionDelegate currentState;
 	public ActionDelegate CurrentState {
 		get {
@@ -41,5 +55,5 @@ public abstract class Intention {
 
     public abstract Vector3 DefaultState(Agent agent);
 
-	
+    public abstract void UpdatePriority(BDI bdi);
 }

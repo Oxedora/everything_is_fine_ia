@@ -47,4 +47,20 @@ public class LookForRelative : Intention {
             }
         }
 	}
+
+    public override void UpdatePriority(BDI bdi)
+    {
+        // Counting the number of agent that aren't in my sight
+        int nbAgentLost = bdi.myBelief.MyGroup.Group.Count;
+        foreach(Agent relative in bdi.myBelief.MyGroup.Group.Keys)
+        {
+            if(bdi.myPerception.AgentsInSight.Contains(relative))
+            {
+                nbAgentLost--;
+            }
+        }
+
+        // If there is agent to seek i update my priority else it's 0
+        Priority = (nbAgentLost > 0 ? ((float)nbAgentLost / (float)bdi.myBelief.MyGroup.Group.Count) - bdi.myFeelings.Fear : 0);
+    }
 }
