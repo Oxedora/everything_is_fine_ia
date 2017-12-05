@@ -72,7 +72,7 @@ public class Perception {
 		wallsInSight = getWallsInSight(myAgent);
 		doorsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.DoorMask);
 		indicationsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.IndicationMask);
-		fireInSight = getGameObjectsInSight(myAgent, myAgent.Settings.FireMask);
+		fireInSight = getGameObjectsTooClose(myAgent, myAgent.Settings.FireMask);
         checkpointsInSight = getGameObjectsInSight(myAgent, myAgent.Settings.CheckpointMask);
 	}
 
@@ -141,6 +141,18 @@ public class Perception {
 	public List<GameObject> getGameObjectsInSight(Agent myAgent, LayerMask layer){
 		List<GameObject> visibleTargets = new List<GameObject>();
 		Collider[] targetsInViewRadius = Physics.OverlapSphere(myAgent.transform.position, myAgent.Settings.ViewRadius, layer);
+		foreach (Collider c in targetsInViewRadius)
+		{
+			GameObject target = c.gameObject;
+			if(isInSight(myAgent, target)){visibleTargets.Add(target);}
+		}
+
+		return visibleTargets;
+	}
+
+	public List<GameObject> getGameObjectsTooClose(Agent myAgent, LayerMask layer){
+		List<GameObject> visibleTargets = new List<GameObject>();
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(myAgent.transform.position, myAgent.Settings.SafeSpace, layer);
 		foreach (Collider c in targetsInViewRadius)
 		{
 			GameObject target = c.gameObject;
