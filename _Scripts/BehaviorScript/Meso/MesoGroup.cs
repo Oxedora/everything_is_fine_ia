@@ -11,12 +11,17 @@ public class MesoGroup {
 	/// <Summary>
 	/// The dictionnary containing the agents and theirs positions
 	/// </Summary>
-	private Dictionary<Agent, Vector3?> group;
+	private Dictionary<Agent, Vector3?> group = new Dictionary<Agent, Vector3?>();
 	public Dictionary<Agent, Vector3?> Group {
 		get {
 			return group;
 		}
 	}
+
+	/// <Summary>
+	/// Create an empty MesoGroup, the agent is alone
+	/// </Summary>
+	public MesoGroup() {}
 
 	/// <Summary>
 	/// Create a MesoGroup with every Agent and their position
@@ -30,7 +35,7 @@ public class MesoGroup {
 	/// Every frame, updates the position of every member in the group if the agent sees them
 	/// </Summary>
 	/// <param name="p"> The agent perception during this frame </param>
-	void UpdateGroup (Perception p) {
+	public void UpdateGroup (Perception p) {
 		foreach(Agent a in group.Keys){ // for each member of this group
 			if(p.AgentsInSight.Contains(a)){ // if the given agent sees this member
 				group[a] = a.transform.position; // updates the position of this member for the given agent
@@ -42,7 +47,7 @@ public class MesoGroup {
 	/// Sets the position of the given agent to null if he is part of the group
 	/// </Summary>
 	/// <param name="agent"> The agent whose position needs to be modified </param>
-	private void LostTraceOf(Agent agent){
+	public void LostTraceOf(Agent agent){
 		if(group.Keys.Contains(agent)){ // if the given agent is in this group
 			group[agent] = null; // set his position to unknown
 		}

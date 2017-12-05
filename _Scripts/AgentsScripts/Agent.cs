@@ -37,28 +37,7 @@ public class Agent : MonoBehaviour {
     	}
     }
 
-    private GameObject onCheckpoint = null;
-    public GameObject OnCheckpoint
-    {
-        get
-        {
-            return onCheckpoint;
-        }
 
-        set
-        {
-            onCheckpoint = value;
-        }
-    }
-
-    private Dictionary<GameObject, int> checkedPoints;
-    public Dictionary<GameObject, int> CheckedPoints
-    {
-        get
-        {
-            return checkedPoints;
-        }
-    }
 
 
 	// Use this for initialization
@@ -67,7 +46,6 @@ public class Agent : MonoBehaviour {
 		settings = GetComponent<AgentsSettings>();
 		flocking = new Flock(this);
 		bdi = new BDI(this);
-        checkedPoints = new Dictionary<GameObject, int>();
 	}
 	
 	// Update is called once per frame
@@ -99,14 +77,14 @@ public class Agent : MonoBehaviour {
     {
         if (collision.gameObject.tag.Equals("Checkpoint"))
         {
-            onCheckpoint = collision.gameObject;
-            if (checkedPoints.Keys.Contains(collision.gameObject))
+            bdi.myBelief.OnCheckpoint = collision.gameObject;
+            if (bdi.myBelief.CheckedPoints.Keys.Contains(collision.gameObject))
             {
-                checkedPoints[collision.gameObject]++;
+                bdi.myBelief.CheckPoint(collision.gameObject);
             }
             else
             {
-                checkedPoints.Add(collision.gameObject, 0);
+                bdi.myBelief.AddCP(collision.gameObject);
             }
         }
         else if (collision.gameObject.tag.Equals("Exit"))

@@ -58,7 +58,7 @@ public class BDI {
 	// Use this for initialization
 	public BDI (Agent agent) {
 		myAgent = agent;
-		belief = new Belief(new MesoGroup(new Dictionary<Agent, Vector3?>()), new Vector3(), new List<Node>());
+		belief = new Belief();
 		desire = new Desire(agent.GetType());
 		intention = new GetOut();
 		perception = new Perception(myAgent);

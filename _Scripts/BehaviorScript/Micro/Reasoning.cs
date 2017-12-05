@@ -31,6 +31,7 @@ public class Reasoning {
         // If he dies, he dies
 		if(f.Fear >= ratioFear){
 			i = null;
+            // rajouter la fifolie
             return reflexeDir;
 		}
 
@@ -39,7 +40,7 @@ public class Reasoning {
             reflexeDir = DodgeObjects(position, p.FireInSight);
         }
         else {
-            i = d.Update(f.Fear, i);
+            i = d.Update(f.Fear, i); // ligne à modif pour les intentions
         }
 
         return reflexeDir; 
@@ -61,21 +62,4 @@ public class Reasoning {
         sep.y = 0;
         return (sep.magnitude > 1.0f ? sep.normalized : sep);
     }
-
-    /*// Returns the Vector3 position of the closest indication to follow
-    private Vector3 FollowIndication(Agent myAgent, List<GameObject> indicationToFollow)
-    {
-        float closest = Vector3.Distance(myAgent.transform.position, indicationToFollow[0].transform.position);
-        Vector3 indic = indicationToFollow[0].transform.position;
-        foreach (GameObject go in indicationToFollow)
-        {
-            float dist = Vector3.Distance(myAgent.transform.position, go.transform.position);
-            if (dist < closest)
-            {
-                closest = dist;
-                indic = go.transform.position;
-            }
-        }
-        return indic;
-    }*/
 }

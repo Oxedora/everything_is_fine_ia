@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Belief {
 
-	private MesoGroup myGroup;
+	private MesoGroup myGroup = new MesoGroup();
 	public MesoGroup MyGroup {
 		get {
 			return myGroup;
@@ -12,61 +12,57 @@ public class Belief {
 	}
 
 	// sous quelle forme stocker l'indication de la sortie ?
-	private Vector3 indication;
-	public Vector3 Indication {
+	private GameObject lastIndication = null;
+	public GameObject LastIndication {
 		get {
-			return indication;
+			return lastIndication;
+		}
+
+		set {
+			lastIndication = value;
 		}
 	}
 
-	private List<Node> path;
-	public List<Node> Path {
-		get {
-			return path;
-		}
-	}
+    private GameObject onCheckpoint = null;
+    public GameObject OnCheckpoint
+    {
+        get
+        {
+            return onCheckpoint;
+        }
 
-	public Belief(MesoGroup mg, Vector3 i, List<Node> p){
+        set
+        {
+            onCheckpoint = value;
+        }
+    }
+
+    private Dictionary<GameObject, int> checkedPoints = new Dictionary<GameObject, int>();
+    public Dictionary<GameObject, int> CheckedPoints
+    {
+        get
+        {
+            return checkedPoints;
+        }
+    }
+	
+
+    public Belief() {}
+    
+	public Belief(MesoGroup mg){
 		myGroup = mg;
-		indication = i;
-		path = p;
 	}
 
 	// Update is called once per frame
 	public void Update (Perception p) {
-		UpdateMesoPosition(p);
-		NextIndicationToFollow(p);
-		UpdatePath(p);
+		MyGroup.UpdateGroup(p);
 	}
 
-	public void UpdateMesoPosition(Perception p){
-		foreach(Agent a in MesoInSight(p.AgentsInSight)){
-			myGroup.Group[a] = a.transform.position;
-		}
+	public void CheckPoint(GameObject go){
+		checkedPoints[go]++;
 	}
 
-	public void NextIndicationToFollow(Perception p){
-		List<GameObject> indicationsInSight = p.IndicationsInSight;
-		if(indicationsInSight.Count > 0){
-			System.Random rand = new System.Random();
-			indication = indicationsInSight[rand.Next(0, indicationsInSight.Count)].transform.position;
-		}
-	}
-
-	public void UpdatePath(Perception p){
-
-	}
-
-	public List<Agent> MesoInSight(List<Agent> agentsInSight){
-		List<Agent> mesoInSight = new List<Agent>();
-		foreach(Agent a in myGroup.Group.Keys){
-			foreach(Agent b in agentsInSight){
-				if(a.Equals(b)){
-					mesoInSight.Add(a);
-					break;
-				}
-			}
-		}
-		return mesoInSight;
+	public void AddCP(GameObject go){
+		checkedPoints.Add(go, 1);
 	}
 }
