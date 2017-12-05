@@ -9,12 +9,6 @@ using System;
 [AgentAllowed(typeof(Elder))]
 [AgentAllowed(typeof(Worker))]
 public class GetOut : Intention {
-	private GameObject cpTarget = null;
-	public GameObject CpTarget {
-		get {
-			return cpTarget;
-		}
-	}
 
 	public GetOut() : base() {}
 
@@ -25,16 +19,16 @@ public class GetOut : Intention {
 			SelectCheckPoint(agent);
 		}
         // Else i follow the indications if any
-		else if(cpTarget == null && agent.Bdi.myPerception.IndicationsInSight.Count > 0){
+		else if(agent.Bdi.myBelief.CpTarget == null && agent.Bdi.myPerception.IndicationsInSight.Count > 0){
 			return FollowIndication(agent.transform.position, agent.Bdi.myPerception.IndicationsInSight[0]);
 		}
 		
-		return (cpTarget == null ? agent.transform.TransformDirection(Vector3.zero) : (cpTarget.transform.position - agent.transform.position));
+		return (agent.Bdi.myBelief.CpTarget  == null ? agent.transform.TransformDirection(Vector3.zero) : (agent.Bdi.myBelief.CpTarget.transform.position - agent.transform.position));
 	}
 
 	private void SelectCheckPoint(Agent agent){
         // Removing old checkpoint target
-        cpTarget = null;
+        agent.Bdi.myBelief.CpTarget = null;
         // If i see an indications, i turn in the direction indicated
         if (agent.Bdi.myPerception.IndicationsInSight.Count > 0){
             //agent.transform.rotation = Quaternion.LookRotation(agent.Bdi.myPerception.IndicationsInSight[0].transform.TransformDirection(Vector3.forward));
@@ -63,7 +57,7 @@ public class GetOut : Intention {
 
 
 		if(!(cpToGo == null)){
-			cpTarget = cpToGo;
+            agent.Bdi.myBelief.CpTarget  = cpToGo;
 		}
         // If i already crossed every checkpoint in sight, i take the one i crossed less times
 		else {
@@ -74,7 +68,7 @@ public class GetOut : Intention {
 					prio = agent.Bdi.myBelief.CheckedPoints[go];
 				}
 			}
-			if(!(cpToGo == null)){cpTarget = cpToGo;}
+			if(!(cpToGo == null)){ agent.Bdi.myBelief.CpTarget = cpToGo;}
 		}
         
         // Reseting the agent OnCheckpoint
