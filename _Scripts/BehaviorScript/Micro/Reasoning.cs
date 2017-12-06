@@ -18,11 +18,7 @@ public class Reasoning {
     /// <param name="agent">The agent that needs his reasoning updated </param>
 	public Vector3 UpdateReasoning (Agent agent) {
         Vector3 reflexeDir = Vector3.zero;
-
-        //if (agent.Bdi.myPerception.FireInSight.Count > 0)
-        //{
-        //    agent.Bdi.myFeelings.Fear += agent.Bdi.myPerception.FireInSight.Count * 0.1f;
-        //}
+        
         // If he dies, he dies
 		if(agent.Bdi.myFeelings.Fear >= agent.Settings.RatioFear){
 			agent.Bdi.myIntention = null;
