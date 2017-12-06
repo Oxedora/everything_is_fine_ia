@@ -16,7 +16,7 @@ public class AgentsSettings : MonoBehaviour {
 
 	// Perception angle
 	[Range(0,360)]
-	private float viewAngle= 120.0f;
+	private float viewAngle= 180.0f;
 	public float ViewAngle {
 		get {
 			return viewAngle;
@@ -64,7 +64,7 @@ public class AgentsSettings : MonoBehaviour {
 	}
 
 	// Coeff for Separate force
-	private float coeffS = 3.33f;
+	private float coeffS = 0.5f;
 	public float CoeffS {
 		get {
 			return coeffS;
@@ -73,7 +73,7 @@ public class AgentsSettings : MonoBehaviour {
 
 	// Coeff for Dodge force
 	[Range(0.0f, 1.0f)]
-	private float coeffD = 0.9f;
+	private float coeffD = 0.5f;
 	public float CoeffD {
 		get {
 			return coeffD;

@@ -21,7 +21,7 @@ public class Reasoning {
         
         // If he dies, he dies
 		if(agent.Bdi.myFeelings.Fear >= agent.Settings.RatioFear){
-			agent.Bdi.myIntention = null;
+			agent.Bdi.myIntention = new Madness();
             Debug.Log(agent.gameObject.name + " est figé par la peur");
             // rajouter la fifolie
             return reflexeDir;
