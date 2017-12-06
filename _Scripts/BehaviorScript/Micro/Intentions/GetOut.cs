@@ -35,6 +35,7 @@ public class GetOut : Intention {
 	}
 
 	private void SelectCheckPoint(Agent agent){
+        Debug.Log(agent.gameObject.name + " selecting a new checkpoint");
         // Removing old checkpoint target
         agent.Bdi.myBelief.CpTarget = null;
         // If i see an indications, i turn in the direction indicated
@@ -50,6 +51,7 @@ public class GetOut : Intention {
         // Removing the checkpoint i'm on if i see him
         if(cpInSight.Contains(agent.Bdi.myBelief.OnCheckpoint))
         {
+            Debug.Log("Removing the checkpoint i'm in from the selection");
             cpInSight.Remove(agent.Bdi.myBelief.OnCheckpoint);
         }
 
@@ -65,6 +67,7 @@ public class GetOut : Intention {
 
 
 		if(!(cpToGo == null)){
+            Debug.Log("Selected " + cpToGo.gameObject.name);
             agent.Bdi.myBelief.CpTarget  = cpToGo;
 		}
         // If i already crossed every checkpoint in sight, i take the one i crossed less times
@@ -76,7 +79,7 @@ public class GetOut : Intention {
 					prio = agent.Bdi.myBelief.CheckedPoints[go];
 				}
 			}
-			if(!(cpToGo == null)){ agent.Bdi.myBelief.CpTarget = cpToGo;}
+			if(!(cpToGo == null)){ agent.Bdi.myBelief.CpTarget = cpToGo; Debug.Log("Selected " + cpToGo.gameObject.name); }
 		}
         
         // Reseting the agent OnCheckpoint

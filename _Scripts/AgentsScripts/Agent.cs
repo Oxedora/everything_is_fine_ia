@@ -63,23 +63,12 @@ public class Agent : MonoBehaviour {
             Vector3 intentionDirection = bdi.myIntention.DefaultState(this).normalized;
 
             intentionDirection.y = 0;
-            bdi.UpdateBDI();
             List<Agent> neighbors = bdi.myPerception.AgentsInSight;
-
-            //Vector3 viewAngleA = bdi.myPerception.DirFromAngle(this, - settings.ViewAngle / 2, false);
-            //Vector3 viewAngleB = bdi.myPerception.DirFromAngle(this, settings.ViewAngle / 2, false);
-
-            //Debug.DrawLine(transform.position, transform.position + viewAngleA * settings.ViewRadius);
-            //Debug.DrawLine(transform.position, transform.position + viewAngleB * settings.ViewRadius);
-
-            //foreach(Agent a in neighbors){
-            //    Debug.DrawLine(transform.position, a.transform.position, Color.yellow);
-            //}
-
+          
             Vector3 force = (intentionDirection.Equals(Vector3.zero) ? flocking.Flocking(neighbors) : (1 - settings.CoeffI) * flocking.Flocking(neighbors) + settings.CoeffI * intentionDirection);
             Vector3 destination = transform.position + force.normalized;
             //Debug.DrawLine(transform.position, destination, Color.black);
-            rb.velocity = (force.Equals(Vector3.zero) ? (Vector3)transform.TransformDirection(Vector3.forward) : (destination - transform.position).normalized) * settings.MaxSpeed;
+            rb.velocity = (force.Equals(Vector3.zero) ? transform.TransformDirection(Vector3.forward) : (destination - transform.position).normalized) * settings.MaxSpeed;
             transform.rotation = Quaternion.LookRotation(rb.velocity);
         }
     }
@@ -105,3 +94,13 @@ public class Agent : MonoBehaviour {
     }
 
 }
+
+//Vector3 viewAngleA = bdi.myPerception.DirFromAngle(this, - settings.ViewAngle / 2, false);
+//Vector3 viewAngleB = bdi.myPerception.DirFromAngle(this, settings.ViewAngle / 2, false);
+
+//Debug.DrawLine(transform.position, transform.position + viewAngleA * settings.ViewRadius);
+//Debug.DrawLine(transform.position, transform.position + viewAngleB * settings.ViewRadius);
+
+//foreach(Agent a in neighbors){
+//    Debug.DrawLine(transform.position, a.transform.position, Color.yellow);
+//}

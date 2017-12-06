@@ -30,7 +30,7 @@ public class Feelings {
 	
 	// Update is called once per frame
 	public void UpdateFeelings (Perception p) {
-		Fear += (float) 0.1 * p.FireInSight.Count;
+		Fear = Mathf.Max(fear, (float) 0.1 * p.FireInSight.Count);
 
 	}
 }

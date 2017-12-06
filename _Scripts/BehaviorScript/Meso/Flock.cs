@@ -88,6 +88,7 @@ public class Flock {
 		Vector3 dod = Vector3.zero;
 		RaycastHit hitInfo, hitInfoLeft, hitInfoRight;
 		Vector3 fwd = myAgent.transform.TransformDirection(Vector3.forward);
+
 		if(Physics.Raycast(myAgent.transform.position, fwd, out hitInfo, myAgent.Settings.SafeSpace, myAgent.Settings.ObstacleMask)){
             Debug.DrawLine(myAgent.transform.position, hitInfo.point, Color.magenta);
             dod = myAgent.transform.position - hitInfo.point;
@@ -95,13 +96,13 @@ public class Flock {
 			float angle = myAgent.Settings.ViewAngle - myAgent.Settings.ViewAngle * ratio;
 			dod = myAgent.Bdi.myPerception.DirFromAngle(myAgent, angle);
 
-            Vector3 left = myAgent.transform.TransformDirection(Vector3.left);
-            Vector3 right = myAgent.transform.TransformDirection(Vector3.right);
+            //Vector3 left = myAgent.transform.TransformDirection(Vector3.left);
+            //Vector3 right = myAgent.transform.TransformDirection(Vector3.right);
 
-            Physics.Raycast(myAgent.transform.position, left, out hitInfoLeft, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
-            Physics.Raycast(myAgent.transform.position, right, out hitInfoRight, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
+            //Physics.Raycast(myAgent.transform.position, left, out hitInfoLeft, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
+            //Physics.Raycast(myAgent.transform.position, right, out hitInfoRight, myAgent.Settings.ViewRadius, myAgent.Settings.ObstacleMask);
 
-            dod = myAgent.Bdi.myPerception.DirFromAngle(myAgent, (Vector3.Distance(myAgent.transform.position, hitInfoLeft.point) > Vector3.Distance(myAgent.transform.position, hitInfoRight.point) ? -angle : angle));
+            //dod = myAgent.Bdi.myPerception.DirFromAngle(myAgent, (Vector3.Distance(myAgent.transform.position, hitInfoLeft.point) > Vector3.Distance(myAgent.transform.position, hitInfoRight.point) ? -angle : angle));
         }
 
         dod.y = 0;

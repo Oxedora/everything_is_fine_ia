@@ -19,9 +19,6 @@ public class AgentAllowed : System.Attribute {
 
 public abstract class Intention {
 
-	// Next state to execute
-	public delegate Vector3 ActionDelegate();
-
     [Range(0f, 1f)]
     private float priority;
     public float Priority
